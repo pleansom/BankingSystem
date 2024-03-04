@@ -18,7 +18,7 @@ public class Homepage {
             System.out.print("    Input: ");
             stepinput = input.next();
             switch (stepinput) {
-                case "1":// create account
+                case "1":
                     System.out.println("Create account: ");
                     System.out.println("    1 Enter: ");
                     System.out.println("    2 Back: ");
@@ -38,7 +38,7 @@ public class Homepage {
 
                     break;
 
-                case "2": // deposit money
+                case "2":
                     if (bank.loginStatus == true) {
                         System.out.println("Deposit money: ");
                         System.out.println("    1 Enter: ");
@@ -65,7 +65,7 @@ public class Homepage {
                     }
                     break;
 
-                case "3": // withdraw
+                case "3":
                     if (bank.loginStatus == true) {
                         System.out.println("Withdraw money: ");
                         System.out.println("    1 Enter: ");
@@ -91,7 +91,7 @@ public class Homepage {
                     }
                     break;
 
-                case "4": // transfer
+                case "4":
                     if (bank.loginStatus == true) {
                         System.out.println("Transfer money: ");
                         System.out.println("    1 Enter: ");
@@ -119,7 +119,7 @@ public class Homepage {
                     }
                     break;
 
-                case "5": // viewbalance
+                case "5":
                     if (bank.loginStatus == true) {
                         System.out.println("View balances: ");
                         System.out.println("    1 Enter: ");
@@ -138,7 +138,7 @@ public class Homepage {
                     }
                     break;
 
-                case "6": // ViewTransactionHistory
+                case "6":
                     if (bank.loginStatus == true) {
                         System.out.println("View transaction history: ");
                         System.out.println("    1 Enter: ");
@@ -157,7 +157,7 @@ public class Homepage {
                     }
                     break;
 
-                case "7": // login
+                case "7":
                     if (bank.loginStatus != true) {
                         System.out.println("Login: ");
                         System.out.println("    1 Enter: ");
@@ -181,7 +181,7 @@ public class Homepage {
                     }
                     break;
 
-                case "8": // logout
+                case "8":
                     if (bank.loginStatus == true) {
                         System.out.println("Are you sure you want to logout: ");
                         System.out.println("    1 Yes: ");
@@ -200,7 +200,7 @@ public class Homepage {
                     }
                     break;
 
-                case "9": // exit program
+                case "9":
                     System.out.println("Exit Program.");
                     break;
                 default:
