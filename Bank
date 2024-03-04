@@ -1,0 +1,225 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Date;
+import java.util.Map;
+
+public class Bank {
+    private Map<String, Account> findaccounts;
+    private Account loginaccount = null;
+    private String loginUsername = "";
+    public boolean loginStatus = false;
+
+    public Bank() {
+        this.findaccounts = new HashMap<>();
+    }
+
+    public static boolean isInputMoneyCorrect(String input) {
+        try {
+            double test = Double.parseDouble(input);
+            if (test <= 0) {
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+
+    }
+
+    public void createAccount(String username, String password) {
+        boolean duplicate = false;
+        for (String i : findaccounts.keySet()) {
+            if (i.equals(username)) {
+                duplicate = true;
+            }
+        }
+        if (duplicate == false) {
+            Account account = new Account(username, password);
+            findaccounts.put(username, account);
+            System.out.println("Account created successfully.");
+        } else {
+            System.out.println("Account created Failed.");
+            System.out.println("That username has been used. Please try again.");
+        }
+    }
+
+    public void login(String username, String password) {
+        if (findaccounts.get(username) != null) {
+            if (findaccounts.get(username).getPassword().equals(password)) {
+                loginaccount = findaccounts.get(username);
+                loginUsername = username;
+                loginStatus = true;
+                System.out.println("Login successfully.");
+            } else {
+                System.out.println("Login Failed. Incorrect Password.");
+            }
+        } else {
+            System.out.println("Login Failed. Incorrect Username.");
+        }
+    }
+
+    public void deposit(double deposit) {
+        loginaccount.setBalance(loginaccount.getBalance() + deposit);
+        loginaccount.addTransactions("Deposit", deposit, loginaccount.getBalance());
+        System.out.println("Deposit " + deposit + " Succesfull.");
+        System.out.println("Now your balance is " + loginaccount.getBalance());
+    }
+
+    public void withdraw(double withdraw) {
+        if (loginaccount.getBalance() >= withdraw) {
+            loginaccount.setBalance(loginaccount.getBalance() - withdraw);
+            loginaccount.addTransactions("Withdraw", withdraw, loginaccount.getBalance());
+            System.out.println("Withdraw " + withdraw + " Succesfull.");
+            System.out.println("Now your balance is " + loginaccount.getBalance());
+        } else {
+            System.out.println("Withdraw Failed. Balance less than amount to withdraw!");
+        }
+    }
+
+    public void transfer(String username, double transfer) {
+        if (findaccounts.get(username) != null && !loginUsername.equals(username)) {
+            if (loginaccount.getBalance() >= transfer) {
+                loginaccount.setBalance(loginaccount.getBalance() - transfer);
+                loginaccount.addTransactions("Transfer to " + username, transfer, loginaccount.getBalance());
+
+                findaccounts.get(username).setBalance(findaccounts.get(username).getBalance() + transfer);
+                findaccounts.get(username).addTransactions("Transfer from " + loginUsername, transfer,
+                        findaccounts.get(username).getBalance());
+
+                System.out.println("Transfer " + transfer + " to " + username + " Succesfull.");
+                System.out.println("Now your balance is " + loginaccount.getBalance());
+            } else {
+                System.out.println("Transfer Failed. Balance less than amount to Transfer!");
+            }
+        } else if (loginUsername.equals(username)) {
+            System.out.println("Transfer Failed. Can't Transfer to current login account.");
+        } else {
+            System.out.println("Transfer Failed. Can't find account with that username.");
+        }
+
+    }
+
+    public void viewBalance() {
+        System.out.println("Account Balance : " + loginaccount.getBalance());
+    }
+
+    public void viewTransactions() {
+        loginaccount.viewTransactions();
+    }
+
+    public void logout() {
+        findaccounts.get(loginUsername).setUsername(loginaccount.getUsername());
+        findaccounts.get(loginUsername).setPassword(loginaccount.getPassword());
+        findaccounts.get(loginUsername).setBalance(loginaccount.getBalance());
+        findaccounts.get(loginUsername).setListtransactions(loginaccount.getListtransactions());
+        loginStatus = false;
+        loginaccount = null;
+        loginUsername = "";
+        System.out.println("Logout Success");
+    }
+}
+
+class Account {
+
+    private String username, password;
+    private double balance;
+    private ArrayList<Transaction> listtransactions = new ArrayList<Transaction>();
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+        balance = 0;
+    }
+
+    public void addTransactions(String type, double amount, double balance) {
+        listtransactions.add(new Transaction(type, amount, balance));
+    }
+
+    public void viewTransactions() {
+        System.out.printf("%-35s%-35s%-15s%-15s\n", "Date", "Type", "Amount", "Balance");
+
+        for (int i = 0; i < listtransactions.size(); i++) {
+            Transaction transaction = (Transaction) (listtransactions.get(i));
+            System.out.printf("%-35s%-35s%-15s%-15s\n", transaction.getDate(), transaction.getType(),
+                    transaction.getAmount(), transaction.getBalance());
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public ArrayList<Transaction> getListtransactions() {
+        return listtransactions;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setListtransactions(ArrayList<Transaction> listtransactions) {
+        this.listtransactions = listtransactions;
+    }
+
+}
+
+class Transaction {
+    private Date date = new Date();
+    private String type;
+    private double amount, balance;
+
+    public Transaction(String type, double amount, double balance) {
+        this.type = type;
+        this.amount = amount;
+        this.balance = balance;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+}
