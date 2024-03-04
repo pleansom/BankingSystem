@@ -1,0 +1,218 @@
+import java.util.Scanner;
+
+public class Homepage {
+    public static void main(String[] args) {
+        Bank bank = new Bank();
+        Scanner input = new Scanner(System.in);
+        while (true) {
+            String stepinput = "";
+            System.out.println("\n1 Create account");
+            System.out.println("2 Deposit money");
+            System.out.println("3 Withdraw money");
+            System.out.println("4 Transfer money");
+            System.out.println("5 View balances");
+            System.out.println("6 View transaction history");
+            System.out.println("7 Login");
+            System.out.println("8 Logout");
+            System.out.println("9 Exit");
+            System.out.print("    Input: ");
+            stepinput = input.next();
+            switch (stepinput) {
+                case "1":// create account
+                    System.out.println("Create account: ");
+                    System.out.println("    1 Enter: ");
+                    System.out.println("    2 Back: ");
+                    System.out.print("Input: ");
+                    String check = input.next();
+                    if (check.equals("1")) {
+                        System.out.print("Input Username: ");
+                        String username = input.next();
+                        System.out.print("Input Password: ");
+                        String password = input.next();
+                        bank.createAccount(username, password);
+                    } else if (check.equals("2")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid Input");
+                    }
+
+                    break;
+
+                case "2": // deposit money
+                    if (bank.loginStatus == true) {
+                        System.out.println("Deposit money: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            System.out.print("Input amount to Deposit: ");
+                            String string_deposit = input.next();
+                            if (Bank.isInputMoneyCorrect(string_deposit)) {
+                                double double_deposit = Double.parseDouble(string_deposit);
+                                bank.deposit(double_deposit);
+                            } else {
+                                System.out.println("Invalid Input");
+                            }
+
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "3": // withdraw
+                    if (bank.loginStatus == true) {
+                        System.out.println("Withdraw money: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            System.out.print("Input amount to Withdraw: ");
+                            String string_withdraw = input.next();
+                            if (Bank.isInputMoneyCorrect(string_withdraw)) {
+                                double double_withdraw = Double.parseDouble(string_withdraw);
+                                bank.withdraw(double_withdraw);
+                            } else {
+                                System.out.println("Invalid Input");
+                            }
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "4": // transfer
+                    if (bank.loginStatus == true) {
+                        System.out.println("Transfer money: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            System.out.print("Input receiver username: ");
+                            String username = input.next();
+                            System.out.print("Input amount to Transfer: ");
+                            String string_transfer = input.next();
+                            if (Bank.isInputMoneyCorrect(string_transfer)) {
+                                double double_transfer = Double.parseDouble(string_transfer);
+                                bank.transfer(username, double_transfer);
+                            } else {
+                                System.out.println("Invalid Input");
+                            }
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "5": // viewbalance
+                    if (bank.loginStatus == true) {
+                        System.out.println("View balances: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            bank.viewBalance();
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "6": // ViewTransactionHistory
+                    if (bank.loginStatus == true) {
+                        System.out.println("View transaction history: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            bank.viewTransactions();
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "7": // login
+                    if (bank.loginStatus != true) {
+                        System.out.println("Login: ");
+                        System.out.println("    1 Enter: ");
+                        System.out.println("    2 Back: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            System.out.print("Input Username: ");
+                            String username = input.next();
+                            System.out.print("Input Password: ");
+                            String password = input.next();
+                            bank.login(username, password);
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+
+                    } else {
+                        System.out.println("Please Logout first.");
+                    }
+                    break;
+
+                case "8": // logout
+                    if (bank.loginStatus == true) {
+                        System.out.println("Are you sure you want to logout: ");
+                        System.out.println("    1 Yes: ");
+                        System.out.println("    2 No: ");
+                        System.out.print("Input: ");
+                        check = input.next();
+                        if (check.equals("1")) {
+                            bank.logout();
+                        } else if (check.equals("2")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid Input");
+                        }
+                    } else {
+                        System.out.println("Please Login first.");
+                    }
+                    break;
+
+                case "9": // exit program
+                    System.out.println("Exit Program.");
+                    break;
+                default:
+                    System.out.println("Invalid Input");
+                    break;
+            }
+            if (stepinput.equals("9")) {
+                break;
+            }
+
+        }
+        input.close();
+    }
+
+}
